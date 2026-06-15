@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ThemeProvider } from "next-themes"
+import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "react-hot-toast"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -36,13 +36,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <ThreeWrapper />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider>
           <div className="flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1">
@@ -50,6 +44,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
+          <ThreeWrapper />
           <WhatsAppButton />
           <Toaster
             position="bottom-right"

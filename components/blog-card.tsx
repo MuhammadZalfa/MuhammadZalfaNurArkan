@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Calendar } from "lucide-react"
 import type { BlogPost } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
@@ -11,11 +12,13 @@ export function BlogCard({ post }: BlogCardProps) {
   return (
     <TransitionLink href={`/blog/${post.slug}`}>
       <div className="group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_-5px] hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-1.5">
-        <div className="aspect-video bg-muted overflow-hidden">
-          <img
+        <div className="aspect-video bg-muted overflow-hidden relative">
+          <Image
             src={post.image_url || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80"}
             alt={post.title}
-            className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-all duration-700 group-hover:scale-110"
           />
         </div>
         <div className="p-6">

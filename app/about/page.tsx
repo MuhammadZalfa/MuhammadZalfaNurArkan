@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { createClient } from "@/lib/supabase/server"
 import { SectionHeading } from "@/components/section-heading"
 import { SkillBar } from "@/components/skill-bar"
@@ -19,11 +20,24 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const supabase = await createClient()
 
-  const { data: skills } = await supabase
-    .from("skills")
-    .select("*")
-    .order("category")
-    .order("level", { ascending: false })
+  const [skillsRes, expsRes, edusRes] = await Promise.all([
+    supabase
+      .from("skills")
+      .select("*")
+      .order("category")
+      .order("level", { ascending: false }),
+    supabase
+      .from("experiences")
+      .select("id, title, company, location, start_date, end_date, current, description, tech_stack, created_at")
+      .order("start_date", { ascending: false }),
+    supabase
+      .from("educations")
+      .select("id, institution, degree, field_of_study, start_year, end_year, current, description, created_at")
+      .order("start_year", { ascending: false }),
+  ])
+  const skills = skillsRes.data
+  const experiences = expsRes.data
+  const educations = edusRes.data
 
   const groupedSkills: Record<string, Skill[]> = {}
   skills?.forEach((skill) => {
@@ -32,16 +46,6 @@ export default async function AboutPage() {
     }
     groupedSkills[skill.category]!.push(skill)
   })
-
-  const { data: experiences } = await supabase
-    .from("experiences")
-    .select("*")
-    .order("start_date", { ascending: false })
-
-  const { data: educations } = await supabase
-    .from("educations")
-    .select("*")
-    .order("start_year", { ascending: false })
 
   return (
     <div className="pt-24 md:pt-28 pb-20 md:pb-28">
@@ -56,10 +60,12 @@ export default async function AboutPage() {
             <div className="shrink-0">
               <div className="relative h-56 w-56 rounded-2xl overflow-hidden ring-2 ring-primary/20">
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent z-10" />
-                <img
+                <Image
                   src="/Arkan.png"
                   alt="Profile"
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="224px"
                 />
               </div>
             </div>
@@ -93,7 +99,7 @@ export default async function AboutPage() {
                 <span className="inline-block h-1 w-6 rounded-full bg-primary" />
                 {category}
               </h3>
-              <div className="grid gap-5 md:grid-cols-2">
+              <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                 {categorySkills.map((skill) => (
                   <SkillBar key={skill.id} skill={skill} />
                 ))}

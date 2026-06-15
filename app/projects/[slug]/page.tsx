@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation"
+import Image from "next/image"
 import { ArrowLeft, ExternalLink, Github, Calendar } from "lucide-react"
-import { createClient } from "@/lib/supabase/server"
 import { formatDate } from "@/lib/utils"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { TransitionLink } from "@/components/transition-link"
+import { getProjectBySlug } from "@/lib/queries"
 import type { Metadata } from "next"
 
 export async function generateMetadata({
@@ -12,12 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from("projects")
-    .select("title, description")
-    .eq("slug", slug)
-    .single()
+  const { data } = await getProjectBySlug(slug)
 
   if (!data) return { title: "Proyek Tidak Ditemukan" }
 
@@ -33,13 +29,7 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const supabase = await createClient()
-
-  const { data: project } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("slug", slug)
-    .single()
+  const { data: project } = await getProjectBySlug(slug)
 
   if (!project) notFound()
 
@@ -54,11 +44,14 @@ export default async function ProjectDetailPage({
         </TransitionLink>
 
         <ScrollReveal>
-          <div className="rounded-2xl overflow-hidden bg-muted mb-10">
-            <img
+          <div className="rounded-2xl overflow-hidden bg-muted mb-10 relative aspect-video">
+            <Image
               src={project.image_url || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80"}
               alt={project.title}
-              className="w-full aspect-video object-cover"
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 896px"
             />
           </div>
         </ScrollReveal>

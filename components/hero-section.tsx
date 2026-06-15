@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import { gsap } from "@/lib/gsap"
 import { TransitionLink } from "@/components/transition-link"
@@ -30,9 +31,13 @@ export function HeroSection() {
       className="relative min-h-screen flex items-center overflow-hidden pt-16 md:pt-20"
     >
       <div className="absolute inset-0 md:inset-y-0 md:left-[45%] z-[1]">
-        <div
-          className="h-full w-full bg-cover bg-center"
-          style={{ backgroundImage: "url(/Arkan.png)" }}
+        <Image
+          src="/Arkan.png"
+          alt="Profile"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="(max-width: 768px) 100vw, 55vw"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent md:via-background/30" />
       </div>

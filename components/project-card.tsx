@@ -1,6 +1,7 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import Image from "next/image"
+import Link from "next/link"
 import { ExternalLink, Github } from "lucide-react"
 import type { Project } from "@/lib/types"
 import { cn } from "@/lib/utils"
@@ -11,25 +12,9 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, featured }: ProjectCardProps) {
-  const router = useRouter()
-
-  function handleCardClick() {
-    router.push(`/projects/${project.slug}`)
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault()
-      router.push(`/projects/${project.slug}`)
-    }
-  }
-
   return (
-    <div
-      role="link"
-      tabIndex={0}
-      onClick={handleCardClick}
-      onKeyDown={handleKeyDown}
+    <Link
+      href={`/projects/${project.slug}`}
       className={cn(
         "group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 cursor-pointer",
         "hover:shadow-[0_0_30px_-5px] hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-1.5",
@@ -37,10 +22,12 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
       )}
     >
       <div className="aspect-video bg-muted overflow-hidden relative">
-        <img
+        <Image
           src={project.image_url || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80"}
           alt={project.title}
-          className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/0 to-background/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
@@ -71,29 +58,25 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
             Detail &rarr;
           </span>
           {project.live_url && (
-            <a
-              href={project.live_url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); window.open(project.live_url!, "_blank", "noopener,noreferrer") }}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              onClick={(e) => e.stopPropagation()}
             >
               <ExternalLink className="h-4 w-4" />
-            </a>
+            </button>
           )}
           {project.repo_url && (
-            <a
-              href={project.repo_url}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); window.open(project.repo_url!, "_blank", "noopener,noreferrer") }}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              onClick={(e) => e.stopPropagation()}
             >
               <Github className="h-4 w-4" />
-            </a>
+            </button>
           )}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

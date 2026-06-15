@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Star, Quote } from "lucide-react"
 import type { Testimonial } from "@/lib/types"
 
@@ -21,10 +22,12 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
         &ldquo;{testimonial.message}&rdquo;
       </p>
       <div className="flex items-center gap-3 pt-4 border-t">
-        <img
+        <Image
           src={testimonial.avatar_url || "/Arkan.png"}
           alt={testimonial.name}
-          className="h-10 w-10 rounded-full object-cover ring-2 ring-muted"
+          width={40}
+          height={40}
+          className="rounded-full object-cover ring-2 ring-muted"
         />
         <div>
           <p className="font-medium text-sm">{testimonial.name}</p>

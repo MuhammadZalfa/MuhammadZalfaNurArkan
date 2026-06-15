@@ -38,13 +38,8 @@ export default async function ProjectsPage({
 
   const totalPages = count ? Math.ceil(count / ITEMS_PER_PAGE) : 0
 
-  const { data: categories } = await supabase
-    .from("projects")
-    .select("category")
-    .not("category", "is", null)
-
   const uniqueCategories = [
-    ...new Set(categories?.map((c: { category: string }) => c.category).filter(Boolean)),
+    ...new Set(projects?.map((p) => p.category).filter(Boolean) ?? []),
   ]
 
   return (

@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation"
+import Image from "next/image"
 import { ArrowLeft, Calendar, User } from "lucide-react"
-import { createClient } from "@/lib/supabase/server"
 import { formatDate } from "@/lib/utils"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { TransitionLink } from "@/components/transition-link"
+import { getBlogPostBySlug } from "@/lib/queries"
 import type { Metadata } from "next"
 
 export async function generateMetadata({
@@ -12,12 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from("blog_posts")
-    .select("title, excerpt")
-    .eq("slug", slug)
-    .single()
+  const { data } = await getBlogPostBySlug(slug)
 
   if (!data) return { title: "Artikel Tidak Ditemukan" }
 
@@ -33,13 +29,7 @@ export default async function BlogDetailPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const supabase = await createClient()
-
-  const { data: post } = await supabase
-    .from("blog_posts")
-    .select("*")
-    .eq("slug", slug)
-    .single()
+  const { data: post } = await getBlogPostBySlug(slug)
 
   if (!post) notFound()
 
@@ -56,11 +46,13 @@ export default async function BlogDetailPage({
         <article>
           {post.image_url && (
             <ScrollReveal>
-              <div className="rounded-2xl overflow-hidden bg-muted mb-8">
-                <img
+              <div className="rounded-2xl overflow-hidden bg-muted mb-8 relative aspect-video">
+                <Image
                   src={post.image_url}
                   alt={post.title}
-                  className="w-full aspect-video object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 768px"
                 />
               </div>
             </ScrollReveal>

@@ -19,17 +19,20 @@ const iconMap: Record<string, React.ReactNode> = {
 export default async function HomePage() {
   const supabase = await createClient()
 
-  const { data: featuredProjects } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("is_featured", true)
-    .order("created_at", { ascending: false })
-    .limit(4)
-
-  const { data: testimonials } = await supabase
-    .from("testimonials")
-    .select("*")
-    .order("created_at", { ascending: false })
+  const [featuredResult, testimonialsResult] = await Promise.all([
+    supabase
+      .from("projects")
+      .select("id, title, slug, description, image_url, category, tech_stack, is_featured, live_url, repo_url, created_at, content")
+      .eq("is_featured", true)
+      .order("created_at", { ascending: false })
+      .limit(4),
+    supabase
+      .from("testimonials")
+      .select("id, name, role, avatar_url, message, rating, created_at")
+      .order("created_at", { ascending: false }),
+  ])
+  const featuredProjects = featuredResult.data
+  const testimonials = testimonialsResult.data
 
   return (
     <>
