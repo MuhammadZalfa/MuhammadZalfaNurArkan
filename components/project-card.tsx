@@ -10,14 +10,15 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, featured }: ProjectCardProps) {
   return (
-    <div
+    <Link
+      href={`/projects/${project.slug}`}
       className={cn(
-        "group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500",
+        "group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 block",
         "hover:shadow-[0_0_30px_-5px] hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-1.5",
         featured && "md:col-span-2",
       )}
     >
-      <div className="aspect-video bg-muted overflow-hidden">
+      <div className="aspect-video bg-muted overflow-hidden relative">
         <img
           src={project.image_url || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80"}
           alt={project.title}
@@ -48,18 +49,16 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
           ))}
         </div>
         <div className="flex items-center gap-4 pt-2 border-t">
-          <Link
-            href={`/projects/${project.slug}`}
-            className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-          >
+          <span className="text-sm font-medium text-primary">
             Detail &rarr;
-          </Link>
+          </span>
           {project.live_url && (
             <a
               href={project.live_url}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={(e) => e.stopPropagation()}
             >
               <ExternalLink className="h-4 w-4" />
             </a>
@@ -70,12 +69,13 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              onClick={(e) => e.stopPropagation()}
             >
               <Github className="h-4 w-4" />
             </a>
           )}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
