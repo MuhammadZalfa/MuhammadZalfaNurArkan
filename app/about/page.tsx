@@ -28,24 +28,25 @@ export default async function AboutPage() {
   })
 
   return (
-    <div className="section-padding">
+    <div className="pt-24 md:pt-28 pb-20 md:pb-28">
       <div className="container-page max-w-4xl">
         <SectionHeading
           title="Tentang Saya"
           subtitle="Kenali saya lebih dekat."
         />
 
-        <div className="flex flex-col md:flex-row gap-8 items-start mb-16">
+        <div className="flex flex-col md:flex-row gap-10 items-start mb-20 animate-fade-in-up">
           <div className="shrink-0">
-            <div className="h-48 w-48 rounded-xl overflow-hidden border-4 border-primary/20">
+            <div className="relative h-56 w-56 rounded-2xl overflow-hidden ring-2 ring-primary/20">
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent z-10" />
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80"
+                src="/Arkan.png"
                 alt="Profile"
                 className="h-full w-full object-cover"
               />
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-5">
             <p className="text-muted-foreground leading-relaxed">
               Saya adalah seorang full-stack developer yang bersemangat dalam
               membangun aplikasi web modern. Dengan pengalaman dalam berbagai
@@ -60,18 +61,20 @@ export default async function AboutPage() {
             <a
               href="/cv.pdf"
               download
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/25"
             >
               <Download className="h-4 w-4" /> Download CV
             </a>
           </div>
         </div>
 
-        {/* Skills */}
-        {Object.entries(groupedSkills).map(([category, categorySkills]) => (
-          <div key={category} className="mb-10">
-            <h3 className="text-xl font-semibold mb-6 capitalize">{category}</h3>
-            <div className="grid gap-4 md:grid-cols-2">
+        {Object.entries(groupedSkills).map(([category, categorySkills], i) => (
+          <div key={category} className="mb-12 animate-fade-in-up" style={{ animationDelay: `${i * 100}ms` }}>
+            <h3 className="text-xl font-bold mb-6 capitalize flex items-center gap-3">
+              <span className="inline-block h-1 w-6 rounded-full bg-primary" />
+              {category}
+            </h3>
+            <div className="grid gap-5 md:grid-cols-2">
               {categorySkills.map((skill) => (
                 <SkillBar key={skill.id} skill={skill} />
               ))}

@@ -33,7 +33,7 @@ export default async function BlogPage({
   const totalPages = count ? Math.ceil(count / ITEMS_PER_PAGE) : 0
 
   return (
-    <div className="section-padding">
+    <div className="pt-24 md:pt-28 pb-20 md:pb-28">
       <div className="container-page">
         <SectionHeading
           title="Blog"
@@ -42,14 +42,16 @@ export default async function BlogPage({
 
         {posts && posts.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <BlogCard key={post.id} post={post} />
+            {posts.map((post, i) => (
+              <div key={post.id} style={{ animationDelay: `${i * 75}ms` }} className="animate-fade-in-up">
+                <BlogCard key={post.id} post={post} />
+              </div>
             ))}
           </div>
         ) : (
-          <p className="text-center text-muted-foreground py-12">
-            Belum ada artikel.
-          </p>
+          <div className="text-center py-20">
+            <p className="text-muted-foreground">Belum ada artikel.</p>
+          </div>
         )}
 
         <Pagination

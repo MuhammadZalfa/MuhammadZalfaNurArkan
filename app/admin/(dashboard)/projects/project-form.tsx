@@ -64,7 +64,6 @@ export function ProjectForm({ project }: ProjectFormProps) {
       formData.set("image_url", imageUrl)
     }
 
-    // Set tech_stack as JSON string
     const techInput = (formData.get("tech_stack") as string) || ""
     formData.set("tech_stack", JSON.stringify(techInput.split(",").map((t: string) => t.trim()).filter(Boolean)))
 
@@ -88,129 +87,135 @@ export function ProjectForm({ project }: ProjectFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="sm:col-span-2">
-          <label className="block text-sm font-medium mb-1">Judul</label>
-          <input
-            name="title"
-            defaultValue={project?.title}
-            required
-            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            onChange={(e) => {
-              const slugInput = document.querySelector<HTMLInputElement>("input[name='slug']")
-              if (slugInput && !project) {
-                slugInput.value = slugify(e.target.value)
-              }
-            }}
-          />
-        </div>
-        <div className="sm:col-span-2">
-          <label className="block text-sm font-medium mb-1">Slug</label>
-          <input
-            name="slug"
-            defaultValue={project?.slug}
-            required
-            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Kategori</label>
-          <input
-            name="category"
-            defaultValue={project?.category || ""}
-            required
-            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            placeholder="web, mobile, etc."
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Tech Stack (dipisah koma)</label>
-          <input
-            name="tech_stack"
-            defaultValue={project?.tech_stack?.join(", ") || ""}
-            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            placeholder="React, Node.js, Tailwind"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Gambar</label>
-        <div className="flex items-center gap-4">
-          {imageUrl && (
-            <img
-              src={imageUrl}
-              alt="Preview"
-              className="h-20 w-32 rounded-lg object-cover border"
-            />
-          )}
-          <label className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm cursor-pointer hover:bg-muted transition-colors">
-            <Upload className="h-4 w-4" />
-            {uploading ? "Uploading..." : "Upload Gambar"}
+      <div className="rounded-2xl border bg-card p-6 space-y-6">
+        <h2 className="font-semibold text-lg">Informasi Proyek</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium mb-1.5">Judul</label>
             <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-              disabled={uploading}
+              name="title"
+              defaultValue={project?.title}
+              required
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+              onChange={(e) => {
+                const slugInput = document.querySelector<HTMLInputElement>("input[name='slug']")
+                if (slugInput && !project) {
+                  slugInput.value = slugify(e.target.value)
+                }
+              }}
             />
-          </label>
+          </div>
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium mb-1.5">Slug</label>
+            <input
+              name="slug"
+              defaultValue={project?.slug}
+              required
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5">Kategori</label>
+            <input
+              name="category"
+              defaultValue={project?.category || ""}
+              required
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+              placeholder="web, mobile, etc."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5">Tech Stack (dipisah koma)</label>
+            <input
+              name="tech_stack"
+              defaultValue={project?.tech_stack?.join(", ") || ""}
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+              placeholder="React, Node.js, Tailwind"
+            />
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Deskripsi Singkat</label>
-        <textarea
-          name="description"
-          defaultValue={project?.description || ""}
-          required
-          rows={3}
-          className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">Konten Lengkap (HTML)</label>
-        <textarea
-          name="content"
-          defaultValue={project?.content || ""}
-          required
-          rows={10}
-          className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring font-mono"
-        />
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="block text-sm font-medium mb-1">Live Demo URL</label>
-          <input
-            name="live_url"
-            defaultValue={project?.live_url || ""}
-            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            placeholder="https://..."
+          <label className="block text-sm font-medium mb-1.5">Gambar</label>
+          <div className="flex items-center gap-4">
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Preview"
+                className="h-20 w-32 rounded-xl object-cover border"
+              />
+            )}
+            <label className="inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm cursor-pointer hover:bg-muted transition-all duration-200">
+              <Upload className="h-4 w-4" />
+              {uploading ? "Uploading..." : "Upload Gambar"}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                disabled={uploading}
+              />
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1.5">Deskripsi Singkat</label>
+          <textarea
+            name="description"
+            defaultValue={project?.description || ""}
+            required
+            rows={3}
+            className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary resize-none"
           />
         </div>
+
         <div>
-          <label className="block text-sm font-medium mb-1">Repo URL</label>
-          <input
-            name="repo_url"
-            defaultValue={project?.repo_url || ""}
-            className="w-full rounded-lg border border-input bg-background px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            placeholder="https://github.com/..."
+          <label className="block text-sm font-medium mb-1.5">Konten Lengkap (HTML)</label>
+          <textarea
+            name="content"
+            defaultValue={project?.content || ""}
+            required
+            rows={10}
+            className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary font-mono"
           />
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          name="is_featured"
-          id="is_featured"
-          defaultChecked={project?.is_featured || false}
-          className="rounded border-input"
-        />
-        <label htmlFor="is_featured" className="text-sm font-medium">
-          Tampilkan sebagai proyek unggulan
+      <div className="rounded-2xl border bg-card p-6 space-y-6">
+        <h2 className="font-semibold text-lg">Tautan & Pengaturan</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label className="block text-sm font-medium mb-1.5">Live Demo URL</label>
+            <input
+              name="live_url"
+              defaultValue={project?.live_url || ""}
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+              placeholder="https://..."
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1.5">Repo URL</label>
+            <input
+              name="repo_url"
+              defaultValue={project?.repo_url || ""}
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary"
+              placeholder="https://github.com/..."
+            />
+          </div>
+        </div>
+
+        <label className="flex items-center gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            name="is_featured"
+            id="is_featured"
+            defaultChecked={project?.is_featured || false}
+            className="h-4 w-4 rounded border-input text-primary focus:ring-primary"
+          />
+          <span className="text-sm font-medium">
+            Tampilkan sebagai proyek unggulan
+          </span>
         </label>
       </div>
 
@@ -218,7 +223,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-all duration-200 disabled:opacity-50 shadow-lg shadow-primary/25"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {project ? "Simpan Perubahan" : "Buat Proyek"}
@@ -226,7 +231,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
         <button
           type="button"
           onClick={() => router.back()}
-          className="rounded-lg border px-6 py-2.5 text-sm font-medium hover:bg-muted transition-colors"
+          className="rounded-xl border px-6 py-3 text-sm font-medium hover:bg-muted transition-all duration-200"
         >
           Batal
         </button>

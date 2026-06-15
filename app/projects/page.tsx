@@ -3,6 +3,12 @@ import { createClient } from "@/lib/supabase/server"
 import { ProjectCard } from "@/components/project-card"
 import { SectionHeading } from "@/components/section-heading"
 import { Pagination } from "@/components/pagination"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Portofolio",
+  description: "Kumpulan proyek yang telah saya kerjakan.",
+}
 
 const ITEMS_PER_PAGE = 9
 
@@ -41,21 +47,20 @@ export default async function ProjectsPage({
   ]
 
   return (
-    <div className="section-padding">
+    <div className="pt-24 md:pt-28 pb-20 md:pb-28">
       <div className="container-page">
         <SectionHeading
           title="Portofolio"
           subtitle="Kumpulan proyek yang telah saya kerjakan."
         />
 
-        {/* Filter */}
-        <div className="flex flex-wrap gap-2 mb-8 justify-center">
+        <div className="flex flex-wrap gap-2 mb-10 justify-center">
           <Link
             href="/projects"
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            className={`px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
               !category
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted hover:bg-muted/80"
+                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                : "bg-muted hover:bg-muted/80 text-muted-foreground"
             }`}
           >
             Semua
@@ -64,10 +69,10 @@ export default async function ProjectsPage({
             <Link
               key={cat}
               href={`/projects?category=${encodeURIComponent(cat)}`}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              className={`px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                 category === cat
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted hover:bg-muted/80"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+                  : "bg-muted hover:bg-muted/80 text-muted-foreground"
               }`}
             >
               {cat}
@@ -77,14 +82,16 @@ export default async function ProjectsPage({
 
         {projects && projects.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+            {projects.map((project, i) => (
+              <div key={project.id} style={{ animationDelay: `${i * 75}ms` }} className="animate-fade-in-up">
+                <ProjectCard key={project.id} project={project} />
+              </div>
             ))}
           </div>
         ) : (
-          <p className="text-center text-muted-foreground py-12">
-            Belum ada proyek.
-          </p>
+          <div className="text-center py-20">
+            <p className="text-muted-foreground">Belum ada proyek.</p>
+          </div>
         )}
 
         <Pagination
