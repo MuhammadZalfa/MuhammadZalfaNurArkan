@@ -1,4 +1,6 @@
-import Link from "next/link"
+"use client"
+
+import { useRouter } from "next/navigation"
 import { ExternalLink, Github } from "lucide-react"
 import type { Project } from "@/lib/types"
 import { cn } from "@/lib/utils"
@@ -9,11 +11,27 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, featured }: ProjectCardProps) {
+  const router = useRouter()
+
+  function handleCardClick() {
+    router.push(`/projects/${project.slug}`)
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      router.push(`/projects/${project.slug}`)
+    }
+  }
+
   return (
-    <Link
-      href={`/projects/${project.slug}`}
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
       className={cn(
-        "group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 block",
+        "group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 cursor-pointer",
         "hover:shadow-[0_0_30px_-5px] hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-1.5",
         featured && "md:col-span-2",
       )}
@@ -76,6 +94,6 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
           )}
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
