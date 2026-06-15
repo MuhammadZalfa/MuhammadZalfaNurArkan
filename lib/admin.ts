@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
-import type { Project, BlogPost } from "@/lib/types"
+import type { Project, BlogPost, Experience, Education } from "@/lib/types"
 
 async function checkAdmin() {
   const supabase = await createClient()
@@ -15,6 +15,8 @@ async function checkAdmin() {
 
   return supabase
 }
+
+// ── Projects ──
 
 export async function createProject(formData: FormData): Promise<{ error?: string }> {
   try {
@@ -86,6 +88,8 @@ export async function deleteProject(id: string): Promise<{ error?: string }> {
   }
 }
 
+// ── Blog Posts ──
+
 export async function createBlogPost(formData: FormData): Promise<{ error?: string }> {
   try {
     const supabase = await checkAdmin()
@@ -149,6 +153,142 @@ export async function deleteBlogPost(id: string): Promise<{ error?: string }> {
     return { error: err instanceof Error ? err.message : "Unknown error" }
   }
 }
+
+// ── Experiences ──
+
+export async function createExperience(formData: FormData): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+
+    const payload: Partial<Experience> = {
+      title: formData.get("title") as string,
+      company: formData.get("company") as string || null,
+      location: formData.get("location") as string || null,
+      start_date: formData.get("start_date") as string,
+      end_date: formData.get("end_date") as string || null,
+      current: formData.get("current") === "on",
+      description: formData.get("description") as string || null,
+      tech_stack: JSON.parse((formData.get("tech_stack") as string) || "[]"),
+    }
+
+    const { error } = await supabase.from("experiences").insert(payload)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+export async function updateExperience(id: string, formData: FormData): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+
+    const payload: Partial<Experience> = {
+      title: formData.get("title") as string,
+      company: formData.get("company") as string || null,
+      location: formData.get("location") as string || null,
+      start_date: formData.get("start_date") as string,
+      end_date: formData.get("end_date") as string || null,
+      current: formData.get("current") === "on",
+      description: formData.get("description") as string || null,
+      tech_stack: JSON.parse((formData.get("tech_stack") as string) || "[]"),
+    }
+
+    const { error } = await supabase.from("experiences").update(payload).eq("id", id)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+export async function deleteExperience(id: string): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+    const { error } = await supabase.from("experiences").delete().eq("id", id)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+// ── Educations ──
+
+export async function createEducation(formData: FormData): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+
+    const payload: Partial<Education> = {
+      institution: formData.get("institution") as string,
+      degree: formData.get("degree") as string || null,
+      field_of_study: formData.get("field_of_study") as string || null,
+      start_year: Number(formData.get("start_year")),
+      end_year: formData.get("end_year") ? Number(formData.get("end_year")) : null,
+      current: formData.get("current") === "on",
+      description: formData.get("description") as string || null,
+    }
+
+    const { error } = await supabase.from("educations").insert(payload)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+export async function updateEducation(id: string, formData: FormData): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+
+    const payload: Partial<Education> = {
+      institution: formData.get("institution") as string,
+      degree: formData.get("degree") as string || null,
+      field_of_study: formData.get("field_of_study") as string || null,
+      start_year: Number(formData.get("start_year")),
+      end_year: formData.get("end_year") ? Number(formData.get("end_year")) : null,
+      current: formData.get("current") === "on",
+      description: formData.get("description") as string || null,
+    }
+
+    const { error } = await supabase.from("educations").update(payload).eq("id", id)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+export async function deleteEducation(id: string): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+    const { error } = await supabase.from("educations").delete().eq("id", id)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+// ── Image Upload ──
 
 export async function uploadImage(formData: FormData): Promise<{ url?: string; error?: string }> {
   try {

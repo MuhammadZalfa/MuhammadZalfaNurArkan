@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, FolderOpen, FileText, LogOut, ArrowLeft } from "lucide-react"
+import { LayoutDashboard, FolderOpen, FileText, ScrollText, LogOut, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -11,6 +11,7 @@ const links = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Proyek", icon: FolderOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/resume", label: "Resume", icon: ScrollText },
 ]
 
 export function AdminSidebar() {

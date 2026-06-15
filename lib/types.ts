@@ -38,6 +38,31 @@ export interface Skill {
   category: string
 }
 
+export interface Experience {
+  id: string
+  title: string
+  company: string | null
+  location: string | null
+  start_date: string
+  end_date: string | null
+  current: boolean
+  description: string | null
+  tech_stack: string[]
+  created_at: string
+}
+
+export interface Education {
+  id: string
+  institution: string
+  degree: string | null
+  field_of_study: string | null
+  start_year: number
+  end_year: number | null
+  current: boolean
+  description: string | null
+  created_at: string
+}
+
 export interface BlogPost {
   id: string
   title: string
