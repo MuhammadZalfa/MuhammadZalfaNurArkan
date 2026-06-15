@@ -1,7 +1,7 @@
-import Link from "next/link"
 import { Calendar } from "lucide-react"
 import type { BlogPost } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
+import { TransitionLink } from "@/components/transition-link"
 
 interface BlogCardProps {
   post: BlogPost
@@ -9,7 +9,7 @@ interface BlogCardProps {
 
 export function BlogCard({ post }: BlogCardProps) {
   return (
-    <Link href={`/blog/${post.slug}`}>
+    <TransitionLink href={`/blog/${post.slug}`}>
       <div className="group relative rounded-2xl border bg-card overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_-5px] hover:shadow-primary/10 hover:border-primary/30 hover:-translate-y-1.5">
         <div className="aspect-video bg-muted overflow-hidden">
           <img
@@ -45,6 +45,6 @@ export function BlogCard({ post }: BlogCardProps) {
           )}
         </div>
       </div>
-    </Link>
+    </TransitionLink>
   )
 }

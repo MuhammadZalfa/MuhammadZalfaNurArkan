@@ -1,8 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, FolderOpen, FileText, ScrollText, LogOut, ArrowLeft } from "lucide-react"
+import Link from "next/link"
+import { LayoutDashboard, FolderOpen, FileText, ScrollText, Code2, LogOut, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -11,6 +11,7 @@ const links = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/projects", label: "Proyek", icon: FolderOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/skills", label: "Skill", icon: Code2 },
   { href: "/admin/resume", label: "Resume", icon: ScrollText },
 ]
 

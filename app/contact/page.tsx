@@ -1,6 +1,7 @@
 import { Mail, MapPin, Phone } from "lucide-react"
 import { ContactForm } from "@/components/contact-form"
 import { SectionHeading } from "@/components/section-heading"
+import { ScrollReveal } from "@/components/scroll-reveal"
 import { SOCIAL } from "@/lib/constants"
 import type { Metadata } from "next"
 
@@ -38,13 +39,13 @@ export default function ContactPage() {
         />
 
         <div className="grid gap-10 md:grid-cols-5">
-          <div className="md:col-span-3 animate-fade-in-up">
+          <ScrollReveal className="md:col-span-3">
             <div className="rounded-2xl border bg-card p-6 md:p-8">
               <ContactForm />
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div className="md:col-span-2 space-y-6 animate-fade-in-up" style={{ animationDelay: "150ms" }}>
+          <ScrollReveal className="md:col-span-2 space-y-6" delay={0.15}>
             <h3 className="font-bold text-lg">Informasi Kontak</h3>
 
             <div className="space-y-5">
@@ -79,7 +80,7 @@ export default function ContactPage() {
                 pojok kanan bawah.
               </p>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </div>

@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { NAV_LINKS } from "@/lib/constants"
 import { ThemeSwitcher } from "@/components/theme-switcher"
+import { TransitionLink } from "@/components/transition-link"
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -34,16 +34,16 @@ export function Navbar() {
       )}
     >
       <div className="container-page flex h-16 md:h-20 items-center justify-between">
-        <Link
+        <TransitionLink
           href="/"
           className="text-xl font-bold text-primary tracking-tight"
         >
           Zalfa
-        </Link>
+        </TransitionLink>
 
         <nav className="hidden md:flex items-center gap-1">
           {NAV_LINKS.map((link) => (
-            <Link
+            <TransitionLink
               key={link.href}
               href={link.href}
               className={cn(
@@ -57,15 +57,15 @@ export function Navbar() {
               {pathname === link.href && (
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 w-4 rounded-full bg-primary" />
               )}
-            </Link>
+            </TransitionLink>
           ))}
           {isAdmin && (
-            <Link
+            <TransitionLink
               href="/admin/dashboard"
               className="flex items-center gap-1.5 ml-2 px-3 py-1.5 text-xs font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
             >
               <Shield className="h-3 w-3" /> Admin
-            </Link>
+            </TransitionLink>
           )}
         </nav>
 
@@ -85,7 +85,7 @@ export function Navbar() {
         <div className="md:hidden border-t bg-background/95 backdrop-blur-xl animate-fade-in-down">
           <div className="container-page py-4 space-y-1">
             {NAV_LINKS.map((link) => (
-              <Link
+              <TransitionLink
                 key={link.href}
                 href={link.href}
                 className={cn(
@@ -96,15 +96,15 @@ export function Navbar() {
                 )}
               >
                 {link.label}
-              </Link>
+              </TransitionLink>
             ))}
             {isAdmin && (
-              <Link
+              <TransitionLink
                 href="/admin/dashboard"
                 className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
               >
                 <Shield className="h-4 w-4" /> Admin
-              </Link>
+              </TransitionLink>
             )}
           </div>
         </div>

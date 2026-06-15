@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { BlogCard } from "@/components/blog-card"
 import { SectionHeading } from "@/components/section-heading"
 import { Pagination } from "@/components/pagination"
+import { ScrollReveal } from "@/components/scroll-reveal"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -43,9 +44,9 @@ export default async function BlogPage({
         {posts && posts.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post, i) => (
-              <div key={post.id} style={{ animationDelay: `${i * 75}ms` }} className="animate-fade-in-up">
-                <BlogCard key={post.id} post={post} />
-              </div>
+              <ScrollReveal key={post.id} delay={i * 0.075}>
+                <BlogCard post={post} />
+              </ScrollReveal>
             ))}
           </div>
         ) : (

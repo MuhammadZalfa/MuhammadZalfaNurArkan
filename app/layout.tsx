@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
+import { TransitionProvider } from "@/lib/transition-context"
 import "./globals.css"
 
 const inter = Inter({
@@ -42,7 +43,9 @@ export default function RootLayout({
         >
           <div className="flex min-h-screen flex-col">
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              <TransitionProvider>{children}</TransitionProvider>
+            </main>
             <Footer />
           </div>
           <WhatsAppButton />

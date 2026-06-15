@@ -2,9 +2,9 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Loader2 } from "lucide-react"
+import { TransitionLink } from "@/components/transition-link"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -76,13 +76,13 @@ export default function LoginPage() {
         </form>
 
         <div className="text-center text-sm">
-          <Link href="/auth/forgot-password" className="text-primary hover:underline">
+          <TransitionLink href="/auth/forgot-password" className="text-primary hover:underline">
             Lupa password?
-          </Link>
+          </TransitionLink>
           <span className="mx-2 text-muted-foreground">|</span>
-          <Link href="/auth/sign-up" className="text-primary hover:underline">
+          <TransitionLink href="/auth/sign-up" className="text-primary hover:underline">
             Daftar
-          </Link>
+          </TransitionLink>
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { TransitionLink } from "@/components/transition-link"
 
 interface PaginationProps {
   currentPage: number
@@ -37,12 +37,12 @@ export function Pagination({
   return (
     <div className="flex items-center justify-center gap-2 mt-12">
       {currentPage > 1 && (
-        <Link
+        <TransitionLink
           href={buildUrl(currentPage - 1)}
           className="p-2.5 rounded-xl border hover:bg-muted transition-all duration-200 hover:border-primary/30"
         >
           <ChevronLeft className="h-4 w-4" />
-        </Link>
+        </TransitionLink>
       )}
       {pages.map((page, i) =>
         page === "ellipsis" ? (
@@ -50,7 +50,7 @@ export function Pagination({
             &hellip;
           </span>
         ) : (
-          <Link
+          <TransitionLink
             key={page}
             href={buildUrl(page)}
             className={cn(
@@ -61,16 +61,16 @@ export function Pagination({
             )}
           >
             {page}
-          </Link>
+          </TransitionLink>
         ),
       )}
       {currentPage < totalPages && (
-        <Link
+        <TransitionLink
           href={buildUrl(currentPage + 1)}
           className="p-2.5 rounded-xl border hover:bg-muted transition-all duration-200 hover:border-primary/30"
         >
           <ChevronRight className="h-4 w-4" />
-        </Link>
+        </TransitionLink>
       )}
     </div>
   )

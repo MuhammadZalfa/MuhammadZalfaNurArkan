@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
-import type { Project, BlogPost, Experience, Education } from "@/lib/types"
+import type { Project, BlogPost, Experience, Education, Skill } from "@/lib/types"
 
 async function checkAdmin() {
   const supabase = await createClient()
@@ -282,6 +282,64 @@ export async function deleteEducation(id: string): Promise<{ error?: string }> {
 
     revalidatePath("/about")
     revalidatePath("/admin/resume")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+// ── Skills ──
+
+export async function createSkill(formData: FormData): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+
+    const payload: Partial<Skill> = {
+      name: formData.get("name") as string,
+      level: Number(formData.get("level")),
+      category: formData.get("category") as string,
+    }
+
+    const { error } = await supabase.from("skills").insert(payload)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/skills")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+export async function updateSkill(id: string, formData: FormData): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+
+    const payload: Partial<Skill> = {
+      name: formData.get("name") as string,
+      level: Number(formData.get("level")),
+      category: formData.get("category") as string,
+    }
+
+    const { error } = await supabase.from("skills").update(payload).eq("id", id)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/skills")
+    return {}
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Unknown error" }
+  }
+}
+
+export async function deleteSkill(id: string): Promise<{ error?: string }> {
+  try {
+    const supabase = await checkAdmin()
+    const { error } = await supabase.from("skills").delete().eq("id", id)
+    if (error) return { error: error.message }
+
+    revalidatePath("/about")
+    revalidatePath("/admin/skills")
     return {}
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Unknown error" }

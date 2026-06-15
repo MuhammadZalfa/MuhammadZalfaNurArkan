@@ -1,8 +1,9 @@
-import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { ProjectCard } from "@/components/project-card"
 import { SectionHeading } from "@/components/section-heading"
 import { Pagination } from "@/components/pagination"
+import { TransitionLink } from "@/components/transition-link"
+import { ScrollReveal } from "@/components/scroll-reveal"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default async function ProjectsPage({
         />
 
         <div className="flex flex-wrap gap-2 mb-10 justify-center">
-          <Link
+          <TransitionLink
             href="/projects"
             className={`px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
               !category
@@ -64,9 +65,9 @@ export default async function ProjectsPage({
             }`}
           >
             Semua
-          </Link>
+          </TransitionLink>
           {uniqueCategories.map((cat: string) => (
-            <Link
+            <TransitionLink
               key={cat}
               href={`/projects?category=${encodeURIComponent(cat)}`}
               className={`px-5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
@@ -76,16 +77,16 @@ export default async function ProjectsPage({
               }`}
             >
               {cat}
-            </Link>
+            </TransitionLink>
           ))}
         </div>
 
         {projects && projects.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project, i) => (
-              <div key={project.id} style={{ animationDelay: `${i * 75}ms` }} className="animate-fade-in-up">
-                <ProjectCard key={project.id} project={project} />
-              </div>
+              <ScrollReveal key={project.id} delay={i * 0.075}>
+                <ProjectCard project={project} />
+              </ScrollReveal>
             ))}
           </div>
         ) : (
