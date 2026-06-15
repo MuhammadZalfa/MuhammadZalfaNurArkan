@@ -1,12 +1,9 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import dynamic from "next/dynamic"
 import { ArrowRight } from "lucide-react"
 import { gsap } from "@/lib/gsap"
 import { TransitionLink } from "@/components/transition-link"
-
-const ThreeBG = dynamic(() => import("@/components/three-background").then((m) => m.ThreeBackground), { ssr: false })
 
 export function HeroSection() {
   const root = useRef<HTMLElement>(null)
@@ -32,8 +29,6 @@ export function HeroSection() {
       ref={root}
       className="relative min-h-screen flex items-center overflow-hidden pt-16 md:pt-20"
     >
-      <ThreeBG />
-
       <div className="absolute inset-0 md:inset-y-0 md:left-[45%] z-[1]">
         <div
           className="h-full w-full bg-cover bg-center"

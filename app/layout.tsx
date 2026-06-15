@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
+import { ThreeWrapper } from "@/components/three-wrapper"
 import { TransitionProvider } from "@/lib/transition-context"
 import "./globals.css"
 
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
+        <ThreeWrapper />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
