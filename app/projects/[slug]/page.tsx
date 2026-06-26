@@ -111,15 +111,9 @@ export default async function ProjectDetailPage({
         </ScrollReveal>
 
         <ScrollReveal delay={0.2}>
-          <div className="space-y-4">
-            <p className="text-muted-foreground leading-relaxed text-lg">
-              {project.description}
-            </p>
-            <div
-              className="leading-relaxed text-muted-foreground whitespace-pre-wrap"
-              dangerouslySetInnerHTML={{ __html: project.content }}
-            />
-          </div>
+          <p className="text-muted-foreground leading-relaxed text-lg">
+            {project.description}
+          </p>
         </ScrollReveal>
       </div>
     </div>
