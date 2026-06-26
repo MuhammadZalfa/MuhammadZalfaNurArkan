@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client"
 import { createProject, updateProject } from "@/lib/admin"
 import { Loader2, Upload } from "lucide-react"
 import toast from "react-hot-toast"
+import { RichEditor } from "@/components/rich-editor"
 import type { Project } from "@/lib/types"
 
 interface ProjectFormProps {
@@ -17,6 +18,7 @@ export function ProjectForm({ project }: ProjectFormProps) {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [imageUrl, setImageUrl] = useState(project?.image_url || "")
+  const [description, setDescription] = useState(project?.description || "")
 
   function slugify(title: string) {
     return title
@@ -160,25 +162,14 @@ export function ProjectForm({ project }: ProjectFormProps) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5">Deskripsi Singkat</label>
-          <textarea
-            name="description"
-            defaultValue={project?.description || ""}
-            required
-            rows={3}
-            className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary resize-none"
+          <label className="block text-sm font-medium mb-1.5">Deskripsi</label>
+          <RichEditor
+            value={description}
+            onChange={setDescription}
+            placeholder="Tulis deskripsi proyek..."
+            minRows={6}
           />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1.5">Konten Lengkap (HTML)</label>
-          <textarea
-            name="content"
-            defaultValue={project?.content || ""}
-            required
-            rows={10}
-            className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary font-mono"
-          />
+          <input type="hidden" name="description" value={description} />
         </div>
       </div>
 
